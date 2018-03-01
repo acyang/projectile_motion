@@ -19,12 +19,25 @@ inputs = np.stack((vel, theta), axis=-1)
 #print(inputs.shape)
 
 r    = vel*vel*np.sin(2*np.radians(theta)) / 9.8
-h    = 0.5*vel*vel*np.sin(np.radians(theta)) / 9.8
+h    = vel*vel*np.sin(np.radians(theta))*np.sin(np.radians(theta)) / 19.6
 #print(vel[10],theta[10],r[10],h[10])
 ans = np.stack((r, h), axis=-1)
 
 def f(v, th, x):
     return np.tan(np.radians(th)) * x - 4.9 * x * x / (v * v * np.cos(np.radians(th)) * np.cos(np.radians(th)))
+
+def range(v , th):
+    return v*v*np.sin(2*np.radians(th)) / 9.8
+
+def heigh(v , th):
+    return v*v*np.sin(np.radians(th))*np.sin(np.radians(th)) / 19.6
+
+#x = np.linspace(0, range(2 , 45), 100)
+#plt.plot(x, f(2, 45, x), 'b--')
+#plt.scatter(0.5*range(2 , 45), heigh(2 , 45),c='r',marker=(5, 1))
+#plt.scatter(range(2 , 45), 0,c='g')
+#plt.annotate('max', xy=(0.5*range(2 , 45), heigh(2 , 45)), xytext=(1.5, -1.5), arrowprops=dict(facecolor='black', shrink=0.05),)
+#plt.show()
 
 with tf.variable_scope('Inputs'):
     tf_inputs = tf.placeholder(tf.float32, [None, 2], name='inputs')
@@ -52,12 +65,6 @@ sess.run(tf.global_variables_initializer())
 writer = tf.summary.FileWriter('./log', sess.graph)     # write to file
 merge_op = tf.summary.merge_all() # operation to merge all summary
 
-x = np.linspace(0, 2, 100)
-plt.plot(x, f(2, 45, x))
-plt.annotate('max', xy=(2, 1), xytext=(3, 1.5),
-            arrowprops=dict(facecolor='black', shrink=0.05),
-            )
-plt.show
 
 plt.ion()   # something about plotting
 for step in range(1000):
@@ -66,9 +73,9 @@ for step in range(1000):
     if step % 10 == 0:
         # plot and show learning process
 
-        #print('step: ', step, 'loss: ', l, 'output: ', pred)
+        print('step: ', step, 'loss: ', l)
         plt.pause(0.1)
 
 sess.close()
 plt.ioff()
-plt.show
+plt.show()
