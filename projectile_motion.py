@@ -65,17 +65,20 @@ sess.run(tf.global_variables_initializer())
 writer = tf.summary.FileWriter('./log', sess.graph)     # write to file
 merge_op = tf.summary.merge_all() # operation to merge all summary
 
+saver = tf.train.Saver()  # define a saver for saving and restoring
 
-plt.ion()   # something about plotting
-for step in range(1000):
+for step in range(100):
     # train and net output
     _, l, pred = sess.run([train_op, loss, output], {tf_inputs: inputs, tf_ans: ans})
-    if step % 10 == 0:
+    #if step % 10 == 0:
         # plot and show learning process
+        #print('step: ', step, 'loss: ', l)
 
-        print('step: ', step, 'loss: ', l)
-        plt.pause(0.1)
+saver.save(sess, './params', write_meta_graph=False)
 
-sess.close()
-plt.ioff()
+plt.figure(1, figsize=(10, 5))
+plt.subplot(121)
+plt.scatter(r, pred[:,0] )
 plt.show()
+#plt.plot(x, pred, 'r-', lw=5)
+#plt.text(-1, 1.2, 'Save Loss=%.4f' % l, fontdict={'size': 15, 'color': 'red'})
