@@ -26,17 +26,17 @@ ans = np.stack((r, h), axis=-1)
 def f(v, th, x):
     return np.tan(np.radians(th)) * x - 4.9 * x * x / (v * v * np.cos(np.radians(th)) * np.cos(np.radians(th)))
 
-def range(v , th):
+def hrange(v , th):
     return v*v*np.sin(2*np.radians(th)) / 9.8
 
 def heigh(v , th):
     return v*v*np.sin(np.radians(th))*np.sin(np.radians(th)) / 19.6
 
-#x = np.linspace(0, range(2 , 45), 100)
+#x = np.linspace(0, hrange(2 , 45), 100)
 #plt.plot(x, f(2, 45, x), 'b--')
-#plt.scatter(0.5*range(2 , 45), heigh(2 , 45),c='r',marker=(5, 1))
-#plt.scatter(range(2 , 45), 0,c='g')
-#plt.annotate('max', xy=(0.5*range(2 , 45), heigh(2 , 45)), xytext=(1.5, -1.5), arrowprops=dict(facecolor='black', shrink=0.05),)
+#plt.scatter(0.5*hrange(2 , 45), heigh(2 , 45),c='r',marker=(5, 1))
+#plt.scatter(hrange(2 , 45), 0,c='g')
+#plt.annotate('max', xy=(0.5*hrange(2 , 45), heigh(2 , 45)), xytext=(1.5, -1.5), arrowprops=dict(facecolor='black', shrink=0.05),)
 #plt.show()
 
 with tf.variable_scope('Inputs'):
